@@ -1,0 +1,42 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Web App</title>
+</head>
+<body>
+
+    <h1>Welcome to My Flask Web App!</h1>
+
+    <p>This is a basic web app using Flask and HTML.</p>
+
+    {% if username %}
+        <p>Hello, {{ username }}!</p>
+    {% else %}
+        <p>Please enter your name:</p>
+        <form action="/" method="post">
+            <input type="text" name="username" required>
+            <button type="submit">Submit</button>
+        </form>
+    {% endif %}
+
+</body>
+</html>
+
+# app.py
+from flask import Flask, render_template, request
+
+app = Flask(__name__)
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        username = request.form['username']
+        return render_template('index.html', username=username)
+    else:
+        return render_template('index.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
